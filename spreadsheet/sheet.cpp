@@ -40,8 +40,8 @@ void Sheet::SetCell(Position pos, std::string text) {
 	CheckCyclicDependences(for_check, pos);
 	ClearDependentCellCache(pos);
 
-	//если значение в ячейке уже существовало, то она могла ссылаться на другие ячейки
-	// лишние связи нужно удалить
+	//РµСЃР»Рё Р·РЅР°С‡РµРЅРёРµ РІ СЏС‡РµР№РєРµ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІРѕРІР°Р»Рѕ, С‚Рѕ РѕРЅР° РјРѕРіР»Р° СЃСЃС‹Р»Р°С‚СЊСЃСЏ РЅР° РґСЂСѓРіРёРµ СЏС‡РµР№РєРё
+	// Р»РёС€РЅРёРµ СЃРІСЏР·Рё РЅСѓР¶РЅРѕ СѓРґР°Р»РёС‚СЊ
 	if (prev_value_exists) {
 		DeleteDependence(pos, copy_elem.GetReferencedCells());
 	}
@@ -99,8 +99,8 @@ void Sheet::ClearCell(Position pos) {
 
 	if (CheckCellExistance(pos)) {
 		ClearDependentCellCache(pos);
-		//если значение в ячейке уже существовало, то она могла ссылаться на другие ячейки
-		// лишние связи нужно удалить
+		//РµСЃР»Рё Р·РЅР°С‡РµРЅРёРµ РІ СЏС‡РµР№РєРµ СѓР¶Рµ СЃСѓС‰РµСЃС‚РІРѕРІР°Р»Рѕ, С‚Рѕ РѕРЅР° РјРѕРіР»Р° СЃСЃС‹Р»Р°С‚СЊСЃСЏ РЅР° РґСЂСѓРіРёРµ СЏС‡РµР№РєРё
+		// Р»РёС€РЅРёРµ СЃРІСЏР·Рё РЅСѓР¶РЅРѕ СѓРґР°Р»РёС‚СЊ
 		std::vector<Position> copy_elem = sheet_[pos.row][pos.col]->GetReferencedCells();
 
 		if (sheet_[pos.row].size() == 1) {
@@ -119,7 +119,7 @@ void Sheet::ClearCell(Position pos) {
 	}
 }
 
-//удалить недействительный кэш
+//СѓРґР°Р»РёС‚СЊ РЅРµРґРµР№СЃС‚РІРёС‚РµР»СЊРЅС‹Р№ РєСЌС€
 void Sheet::ClearDependentCellCache(Position pos) {
 	auto deps = sheet_[pos.row][pos.col]->GetDependentCells();
 
@@ -145,7 +145,7 @@ void Sheet::DeleteDependence(Position pos, std::vector<Position>&& prev_refs) {
 	std::vector<Position> diff;
 	std::set_difference(prev_refs.begin(), prev_refs.end(), new_refs.begin(), new_refs.end(), std::back_inserter(diff));
 
-	//удалить недействительные обратные зависимости
+	//СѓРґР°Р»РёС‚СЊ РЅРµРґРµР№СЃС‚РІРёС‚РµР»СЊРЅС‹Рµ РѕР±СЂР°С‚РЅС‹Рµ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё
 	for (auto d : diff) {
 		if (CheckCellExistance(d)) {
 			sheet_[d.row][d.col]->DeleteDependence(pos);
