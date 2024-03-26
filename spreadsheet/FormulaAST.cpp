@@ -285,7 +285,7 @@ namespace ASTImpl {
 				return EP_ATOM;
 			}
 
-			// Для чисел метод возвращает значение числа по ссылке из таблицы.
+			// Р”Р»СЏ С‡РёСЃРµР» РјРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ С‡РёСЃР»Р° РїРѕ СЃСЃС‹Р»РєРµ РёР· С‚Р°Р±Р»РёС†С‹.
 			double Evaluate(const std::function<CellInterface::Value(Position)>& linker) const override {
 				if (!cell_->IsValid()) {
 					throw FormulaError{ FormulaError::Category::Ref };
