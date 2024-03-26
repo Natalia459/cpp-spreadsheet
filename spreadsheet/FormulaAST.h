@@ -17,7 +17,6 @@ class ParsingError : public std::runtime_error {
 
 class FormulaAST {
 public:
-	//explicit FormulaAST(std::unique_ptr<ASTImpl::Expr> root_expr);
 	explicit FormulaAST(std::unique_ptr<ASTImpl::Expr> root_expr, std::forward_list<Position> cells);
 	FormulaAST(FormulaAST&&) = default;
 	FormulaAST& operator=(FormulaAST&&) = default;
@@ -28,11 +27,9 @@ public:
 	void Print(std::ostream& out) const;
 	void PrintFormula(std::ostream& out) const;
 
-	//std::vector<Position> GetReferencedCells() const;
 	std::forward_list<Position>& GetCells() {
 		return cells_;
 	}
-
 	const std::forward_list<Position>& GetCells() const {
 		return cells_;
 	}

@@ -145,8 +145,6 @@ namespace ASTImpl {
 				}
 			}
 
-			// Реализуйте метод Evaluate() для бинарных операций.
-			// При делении на 0 выбрасывайте ошибку вычисления FormulaError
 			double Evaluate(const std::function<CellInterface::Value(Position)>& linker) const override {
 				double EXP = 1e-10;
 				auto lhs = lhs_->Evaluate(linker);
@@ -164,17 +162,6 @@ namespace ASTImpl {
 				}
 				return result;
 			}
-
-			//double Evaluate() const override {
-			//	auto lhs = lhs_->Evaluate();
-			//	auto rhs = rhs_->Evaluate();
-			//	if (!(std::isfinite(lhs) && std::isfinite(rhs))) {
-			//		throw FormulaError{ FormulaError::Category::Arithmetic };
-			//	}
-			//	//if (type_ == Type::Divide && rhs == 0) {
-			//	//	throw FormulaError{ FormulaError::Category::Arithmetic };
-			//	return DoOperation(lhs, rhs);
-			//}
 
 		private:
 			Type type_;
@@ -227,7 +214,6 @@ namespace ASTImpl {
 				return EP_UNARY;
 			}
 
-			// Реализуйте метод Evaluate() для унарных операций.
 			double Evaluate(const std::function<CellInterface::Value(Position)>& linker) const override {
 				auto op = operand_->Evaluate(linker);
 				if (!std::isfinite(op)) {
@@ -235,14 +221,6 @@ namespace ASTImpl {
 				}
 				return DoOperation(op);
 			}
-
-			//double Evaluate() const override {
-			//	auto op = operand_->Evaluate();
-			//	if (!std::isfinite(op)) {
-			//		throw FormulaError{ FormulaError::Category::Arithmetic };
-			//	}
-			//	return DoOperation(op);
-			//}
 
 		private:
 			Type type_;
@@ -276,10 +254,6 @@ namespace ASTImpl {
 				return EP_ATOM;
 			}
 
-			// Для чисел метод возвращает значение числа.
-			//double Evaluate() const override {
-			//	return value_;
-			//}
 			double Evaluate(const std::function<CellInterface::Value(Position)>&) const override {
 				return value_;
 			}
@@ -293,19 +267,6 @@ namespace ASTImpl {
 			explicit CellExpr(const Position* cell)
 				: cell_(cell) {
 			}
-			//CellExpr(CellExpr&& other) 
-			//	:cell_(other.cell_)
-			//{
-			//}
-			//CellExpr(const CellExpr&) = delete;
-
-			//CellExpr& operator=(CellExpr&& rhs) {
-			//	if (this != &rhs) {
-			//		//cell_ = rhs.cell_;
-			//	}
-			//	return *this;
-			//}
-			//CellExpr operator=(const CellExpr&) = delete;
 
 			void Print(std::ostream& out) const override {
 				if (!cell_->IsValid()) {
@@ -492,16 +453,6 @@ FormulaAST ParseFormulaAST(const std::string& in_str) {
 	return ParseFormulaAST(in);
 }
 
-//FormulaAST ParseFormulaAST(const std::string& in_str) {
-//	std::istringstream in(in_str);
-//	try {
-//		return ParseFormulaAST(in);
-//	}
-//	catch (const std::exception& exc) {
-//		std::throw_with_nested(FormulaException(exc.what()));
-//	}
-//}
-
 void FormulaAST::PrintCells(std::ostream& out) const {
 	for (auto cell : cells_) {
 		out << cell.ToString() << ' ';
@@ -520,19 +471,11 @@ double FormulaAST::Execute(const std::function<CellInterface::Value(Position)>& 
 	return root_expr_->Evaluate(linker);
 }
 
-//FormulaAST::FormulaAST(std::unique_ptr<ASTImpl::Expr> root_expr)
-//	: root_expr_(std::move(root_expr)) {
-//}
-
 FormulaAST::FormulaAST(std::unique_ptr<ASTImpl::Expr> root_expr, std::forward_list<Position> cells)
 	: root_expr_(std::move(root_expr))
 	, cells_(std::move(cells)) 
 {
 	cells_.sort();  // to avoid sorting in GetReferencedCells
 }
-
-//std::vector<Position> FormulaAST::GetReferencedCells() const {
-//	return { cells_.begin(), cells_.end() };
-//}
 
 FormulaAST::~FormulaAST() = default;

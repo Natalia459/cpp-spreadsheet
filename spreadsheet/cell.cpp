@@ -11,21 +11,14 @@
 
 using namespace std::literals;
 
-// Реализуйте следующие методы
-//Cell::Cell()
-//	:empty_cell_(std::nullopt), text_cell_(std::nullopt), formula_cell_(std::nullopt), impl_()
-//{
-//}
 
  Cell::Cell(Sheet* sheet)
-	: impl_(), owner_sheet_(sheet) //empty_cell_(std::nullopt), text_cell_(std::nullopt), formula_cell_(std::nullopt),
+	: impl_(), owner_sheet_(sheet) 
 {
 }
 
 Cell& Cell::operator=(Cell&& rhs) {
 	if (this != &rhs) {
-		//formula_cell_ = std::move(rhs.formula_cell_);
-		//text_cell_ = std::move(rhs.text_cell_);
 		impl_ = std::move(rhs.impl_);
 		owner_sheet_ = std::move(rhs.owner_sheet_);
 	}
@@ -33,15 +26,12 @@ Cell& Cell::operator=(Cell&& rhs) {
 }
 
 Cell::Cell(Cell&& other)
-	: impl_(std::move(other.impl_)), owner_sheet_(std::move(other.owner_sheet_)) //empty_cell_(), text_cell_(std::move(other.text_cell_)), formula_cell_(std::move(other.formula_cell_)),
+	: impl_(std::move(other.impl_)), owner_sheet_(std::move(other.owner_sheet_)) 
 {
 }
 
 void Cell::Set(std::string text) {
 	if (text.empty()) {
-		//if (!empty_cell_) {
-		//	empty_cell_ = EmptyImpl{};
-		//}
 		EmptyImpl empty_cell = EmptyImpl{};
 		impl_ = std::make_unique<EmptyImpl>(std::move(empty_cell));
 		return;
@@ -49,10 +39,6 @@ void Cell::Set(std::string text) {
 	if (text[0] == FORMULA_SIGN && text.size() != 1) {
 		FormulaImpl	formula_cell = FormulaImpl{};
 		try {
-			//if (!formula_cell_) {
-			//	formula_cell_ = FormulaImpl{};
-			//}
-
 			formula_cell.SetData(std::string{ text.begin() + 1, text.end() });
 		}
 		catch (const std::exception& exc) {
@@ -61,9 +47,6 @@ void Cell::Set(std::string text) {
 		impl_ = std::make_unique<FormulaImpl>(std::move(formula_cell));
 	}
 	else {
-		//if (!text_cell_) {
-		//	text_cell_ = TextImpl{};
-		//}
 		TextImpl	text_cell = TextImpl{};
 		text_cell.SetData(std::move(text));
 		impl_ = std::make_unique<TextImpl>(std::move(text_cell));
@@ -75,15 +58,6 @@ void Cell::SetDependences(Position ref_pos) {
 }
 
 void Cell::Clear() {
-	//if (empty_cell_) {
-	//	empty_cell_.reset();
-	//}
-	//if (text_cell_) {
-	//	text_cell_.reset();
-	//}
-	//if (formula_cell_) {
-	//	formula_cell_.reset();
-	//}
 	impl_.reset();
 }
 
@@ -106,9 +80,6 @@ std::vector<Position> Cell::GetDependentCells() const {
 	return impl_->GetDependentCells();
 }
 
-void Cell::CheckCyclicDependences() {
-}
-
 void Cell::InvalidateCache(Position pos) {
 	impl_->InvalidateCache();
 }
@@ -124,10 +95,6 @@ bool Cell::IsReferenced() const {
 bool Cell::HasEmptyCache() const {
 	return impl_->HasEmptyCache();
 }
-
-//std::vector<Position> Cell::FindDependedCells(Position pos) {
-//	return owner_sheet_->GetCell(pos)->GetReferencedCells();
-//}
 
 
 void EmptyImpl::SetData(std::string&&) {
@@ -155,7 +122,7 @@ std::vector<Position> EmptyImpl::GetReferencedCells() const {
 }
 
 std::vector<Position> EmptyImpl::GetDependentCells() const {
-	return {};
+	return dependent_;
 }
 
 void EmptyImpl::InvalidateCache() {
@@ -200,7 +167,7 @@ std::vector<Position> TextImpl::GetReferencedCells() const {
 	return {};
 }
 std::vector<Position> TextImpl::GetDependentCells() const {
-	return {};
+	return dependent_;
 }
 
 void TextImpl::InvalidateCache() {
@@ -242,7 +209,7 @@ void FormulaImpl::SetData(std::string&& expression) {
 }
 
 void FormulaImpl::SetDependence(Position ref_pos) {
-
+	dependent_.push_back(ref_pos);
 }
 
 FormulaImpl::ImpValue FormulaImpl::GetValue(const SheetInterface& link) const {

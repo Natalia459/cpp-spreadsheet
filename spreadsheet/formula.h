@@ -6,9 +6,6 @@
 #include <vector>
 #include <forward_list>
 
-//inline std::ostream& operator<<(std::ostream& output, FormulaError fe) {
-//    return output << "#ARITHM!";
-//}
 
 // Формула, позволяющая вычислять и обновлять арифметическое выражение.
 // Поддерживаемые возможности:

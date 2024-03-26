@@ -7,14 +7,11 @@
 #include <cctype>
 #include <sstream>
 
-//#include <iostream>
-
 using namespace std::literals;
 
 namespace {
 	class Formula : public FormulaInterface {
 	public:
-		// Реализуйте следующие методы:
 		explicit Formula(std::string expression) try
 			:ast_(ParseFormulaAST(reinterpret_cast<const std::string&>(expression))) {
 		}
@@ -23,7 +20,6 @@ namespace {
 		}
 
 		Value Evaluate(const SheetInterface& sheet) const override {
-			//Value res;
 			auto func = [&](Position pos) {return (sheet.GetCell(pos)) ? sheet.GetCell(pos)->GetValue() : CellInterface::Value{0.0}; };
 			try {
 				return ast_.Execute(func);
@@ -31,7 +27,6 @@ namespace {
 			catch (const FormulaError& exp) {
 				return FormulaError(exp.GetCategory());
 			}
-			//return res;
 		}
 
 		std::string GetExpression() const override {

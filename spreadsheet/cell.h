@@ -26,13 +26,12 @@ public:
 class Cell : public CellInterface {
 public:
 	Cell(Sheet* sheet);
-	//Cell(Sheet& sheet);
+	Cell(Cell&&);
+	Cell& operator=(Cell&&);
 
 	Cell(const Cell&) = delete;
 	Cell& operator=(const Cell&) = delete;
 
-	Cell(Cell&&);
-	Cell& operator=(Cell&&);
 	~Cell() = default;
 
 	void Set(std::string text);
@@ -52,9 +51,6 @@ public:
 private:
 	std::unique_ptr<Impl> impl_;
 	Sheet* owner_sheet_;
-
-	void CheckCyclicDependences();
-	//std::vector<Position> FindDependedCells(Position pos);
 };
 
 class EmptyImpl : public Impl {

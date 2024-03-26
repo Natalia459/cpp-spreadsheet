@@ -370,13 +370,11 @@ namespace {
     }
 
     void PrintSheet(const std::unique_ptr<SheetInterface>& sheet) {
-        //std::ostringstream os;
-        //os << sheet->GetPrintableSize() << std::endl;
-        //sheet->PrintTexts(os);
-        //os << std::endl;
-        //sheet->PrintValues(os);
-        //os << std::endl;
-        //std::cout << os.str();
+        std::cout << sheet->GetPrintableSize() << std::endl;
+        sheet->PrintTexts(std::cout);
+        std::cout << std::endl;
+        sheet->PrintValues(std::cout);
+        std::cout << std::endl;
     }
 
     void TestClearPrint() {
@@ -438,28 +436,26 @@ namespace {
 
 int main() {
     TestRunner tr;
-    //RUN_TEST(tr, TestPositionAndStringConversion); //OK
-    //RUN_TEST(tr, TestPositionToStringInvalid); //OK
-    //RUN_TEST(tr, TestStringToPositionInvalid); //OK
-    //RUN_TEST(tr, TestEmpty); //OK
-    //RUN_TEST(tr, TestInvalidPosition); //OK
-    //RUN_TEST(tr, TestSetCellPlainText); //OK
-    //RUN_TEST(tr, TestClearCell); //OK
-    //RUN_TEST(tr, TestFormulaArithmetic); //OK
-    //RUN_TEST(tr, TestFormulaReferences); //OK
-    //RUN_TEST(tr, TestFormulaExpressionFormatting); //OK
-    //RUN_TEST(tr, TestFormulaReferencedCells); //OK
-    //RUN_TEST(tr, TestErrorValue); //OK
-    //RUN_TEST(tr, TestErrorArithmetic); //OK
-    //RUN_TEST(tr, TestEmptyCellTreatedAsZero); //OK
-    //RUN_TEST(tr, TestFormulaInvalidPosition); //OK
-    //RUN_TEST(tr, TestPrint); //OK
-    //RUN_TEST(tr, TestCellReferences); //OK
-    //RUN_TEST(tr, TestFormulaIncorrect); //OK
-    //RUN_TEST(tr, TestCellCircularReferences); //OK
-    //RUN_TEST(tr, TestForwardErrors); //OK
-    RUN_TEST(tr, TestClearPrint); 
-    //std::cout << "----------------------------------------------------------------------------" << std::endl;
-    //std::cout << "(5, 5)\n0\n\t1\n\t\t2\n\n\t\t\t\t4\n\n0\n\t1\n\t\t2\n\n\t\t\t\t4\n\n(3, 3)\n0\n\t1\n\t\t2\n\n0\n\t1\n\t\t2\n\n(3, 3)\n0\n\t1\n\t\t2\n\n0\n\t1\n\t\t2\n\n(2, 2)\n0\n\t1\n\n0\n\t1\n\n(1, 1)\n0\n\n0\n\n(0, 0)\n\n" << std::endl;
-    RUN_TEST(tr, TestExample);
+    RUN_TEST(tr, TestPositionAndStringConversion); //OK
+    RUN_TEST(tr, TestPositionToStringInvalid); //OK
+    RUN_TEST(tr, TestStringToPositionInvalid); //OK
+    RUN_TEST(tr, TestEmpty); //OK
+    RUN_TEST(tr, TestInvalidPosition); //OK
+    RUN_TEST(tr, TestSetCellPlainText); //OK
+    RUN_TEST(tr, TestClearCell); //OK
+    RUN_TEST(tr, TestFormulaArithmetic); //OK
+    RUN_TEST(tr, TestFormulaReferences); //OK
+    RUN_TEST(tr, TestFormulaExpressionFormatting); //OK
+    RUN_TEST(tr, TestFormulaReferencedCells); //OK
+    RUN_TEST(tr, TestErrorValue); //OK
+    RUN_TEST(tr, TestErrorArithmetic); //OK
+    RUN_TEST(tr, TestEmptyCellTreatedAsZero); //OK
+    RUN_TEST(tr, TestFormulaInvalidPosition); //OK
+    RUN_TEST(tr, TestPrint); //OK
+    RUN_TEST(tr, TestCellReferences); //OK
+    RUN_TEST(tr, TestFormulaIncorrect); //OK
+    RUN_TEST(tr, TestCellCircularReferences); //OK
+    RUN_TEST(tr, TestForwardErrors); //OK
+    RUN_TEST(tr, TestClearPrint); //OK
+    RUN_TEST(tr, TestExample); //OK
 }

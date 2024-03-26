@@ -12,19 +12,34 @@ const int ANSI_A_INDEX = 65;
 
 const Position Position::NONE = { -1, -1 };
 
+FormulaError::FormulaError(Category category)
+	:category_(category)
+{
+}
 
-//FormulaError::Category FormulaError::GetCategory() const {
-//	return category_;
-//}
-//
-//bool FormulaError::operator==(FormulaError rhs) const {
-//	return category_ == rhs.category_;
-//}
-//
-//std::string_view FormulaError::ToString() const {
-//	return "#ARITHM!";
-//}
+FormulaError::Category FormulaError::GetCategory() const {
+	return category_;
+}
 
+bool FormulaError::operator==(FormulaError rhs) const {
+	return category_ == rhs.category_;
+}
+
+std::string_view FormulaError::ToString() const {
+	switch (category_) {
+	case Category::Ref:
+		return "#REF!";
+	case Category::Value:
+		return "#VALUE!";
+	case Category::Arithmetic:
+		return "#ARITHM!";
+	}
+	return "";
+}
+
+size_t PositionHash::operator()(Position pos) const {
+	return std::hash<std::string>()(pos.ToString());
+}
 
 
 bool Position::operator==(const Position rhs) const {

@@ -22,7 +22,6 @@ public:
 
     void PrintValues(std::ostream& output) const override;
     void PrintTexts(std::ostream& output) const override;
-    void CheckCyclicDependences(Cell* cell, std::unordered_set<Position, PositionHash>& unic_cells) const;
 
 private:
     std::unordered_map<int, std::unordered_map<int, std::unique_ptr<Cell>>> sheet_; //u_map<row, u_map<col, Cell*>> 
@@ -33,8 +32,12 @@ private:
     void SetDependence(Position ref_pos, Position parent);
     void ClearDependentCellCache(Position pos);
     void DeleteDependence(Position pos, std::vector<Position>&& prev_refs);
+
     void ExtractValue(std::ostream& output, const CellInterface::Value& val) const;
-    bool CellExists(Position) const;
+    bool CheckCellExistance(Position) const;
+    void CheckCyclicDependences(Cell* copy_cell, Position pos);
+    void SearchCyclicDependences(Cell* cell, std::unordered_set<Position, PositionHash>& unic_cells) const;
+
     void UpdateSize();
     void MakeHigherSize();
     void MakeLowerSize();
